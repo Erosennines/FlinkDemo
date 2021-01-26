@@ -15,8 +15,9 @@ public class Flink01_Source_Collection {
                 new WaterSensor("ws_003", 1577844020L, 42)
         );
 
-        // 从Java集合中读取数据
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 从Java集合中读取数据
         env.fromCollection(waterSensors).print();
 
         env.execute("Flink01_Source_Collection");
