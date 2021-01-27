@@ -2,7 +2,6 @@ package chapter2;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.Types;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -33,7 +32,8 @@ public class Transform02_FlatMap {
                     collector.collect(integer * integer);
                     collector.collect(integer * integer * integer);
                 })
-                .returns(Types.INT);
+                .returns(Types.INT);    // 类型擦除，需要明确返回值类型
+        // 什么是类型擦除：https://www.cnblogs.com/wuqinglong/p/9456193.html
 
         result2.print();
 
