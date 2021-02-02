@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sink02_RedisSink {
-    // kafka sink
+    // redis sink
     public static void main(String[] args) throws Exception {
         // 首先需要添加redis Connector依赖
         List<WaterSensor> waterSensors = new ArrayList<>();
@@ -40,20 +40,22 @@ public class Sink02_RedisSink {
                 .setTimeout(1000 * 10)
                 .build();
 
-        // 指定kafka主机+端口，主题名，序列化方式
         stream.addSink(new RedisSink<>(redisConfig, new RedisMapper<WaterSensor>() {
             @Override
             public RedisCommandDescription getCommandDescription() {
+                // 指定写入redis的数据类型
                 return new RedisCommandDescription(RedisCommand.HSET, "sensor");
             }
 
             @Override
             public String getKeyFromData(WaterSensor waterSensors) {
+                // 指定key
                 return waterSensors.getId();
             }
 
             @Override
             public String getValueFromData(WaterSensor waterSensors) {
+                // 指定value
                 return JSON.toJSONString(waterSensors);
             }
         }));
